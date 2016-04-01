@@ -1,7 +1,21 @@
 require "CSV"
 
+def repl questions
+  prompts = questions.keys.shuffle
+  prompts.each { |prompt|
+    puts prompt
+    correctAnswer = questions[prompt]
+    userAnswer = STDIN.gets.chomp
+    if correctAnswer.downcase == userAnswer.downcase
+      puts "Correct!"
+    else
+      puts "Incorrect: #{correctAnswer}"
+    end
+  }
+end
+
 def main
-  csv = CSV.read("relations/"+ARGV[0]+".csv")
+  csv = CSV.read(ARGV[0])
   header = csv[0].map{|h| h.downcase}
   key = header.index(ARGV[1].downcase)
   if not key
@@ -13,8 +27,10 @@ def main
     STDERR.print "relate: Invalid heading '#{ARGV[2]}'"
     exit
   end
+
   questions = Hash.new
   csv[1..-1].each { |row| questions[row[key]] = row[val] }
+  repl questions
 
 rescue Errno::ENOENT
   STDERR.print "relate: Invalid file '#{ARGV[0]}'"
