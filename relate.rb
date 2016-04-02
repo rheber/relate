@@ -3,6 +3,7 @@ require "CSV"
 def repl questions
   amountCorrect = 0
   prompts = questions.keys.shuffle
+  timeStart = Time.now
   prompts.each { |prompt|
     puts prompt
     correctAnswer = questions[prompt]
@@ -14,7 +15,8 @@ def repl questions
       puts "Incorrect: #{correctAnswer}"
     end
   }
-  return amountCorrect
+  timeEnd = Time.now
+  return amountCorrect, timeEnd-timeStart
 end
 
 def main
@@ -33,10 +35,10 @@ def main
 
   questions = Hash.new
   csv[1..-1].each { |row| questions[row[key]] = row[val] }
-  amountCorrect = repl questions
+  amountCorrect, timeTaken = repl questions
   amountTotal = questions.length
   puts "Correct answers: #{amountCorrect}/#{amountTotal}"
-
+  puts "Time taken: #{timeTaken.round} secs"
 rescue Errno::ENOENT
   STDERR.print "relate: Invalid file '#{ARGV[0]}'"
 rescue NoMethodError
