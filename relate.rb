@@ -1,8 +1,8 @@
 require "CSV"
 
-def repl questions
+def repl questions, amountTotal
   amountCorrect = 0
-  prompts = questions.keys.shuffle
+  prompts = questions.keys.shuffle.take amountTotal
   timeStart = Time.now
   prompts.each { |prompt|
     puts prompt
@@ -35,8 +35,12 @@ def main
 
   questions = Hash.new
   csv[1..-1].each { |row| questions[row[key]] = row[val] }
-  amountCorrect, timeTaken = repl questions
-  amountTotal = questions.length
+  if ARGV[3] and ARGV[3].match(/^\d+$/)
+    amountTotal = ARGV[3].to_i
+  else
+    amountTotal = questions.length
+  end
+  amountCorrect, timeTaken = repl questions, amountTotal
   puts "Correct answers: #{amountCorrect}/#{amountTotal}"
   puts "Time taken: #{timeTaken.round} secs"
 rescue Errno::ENOENT
