@@ -35,10 +35,9 @@ def main
 
   questions = Hash.new
   csv[1..-1].each { |row| questions[row[key]] = row[val] }
-  if ARGV[3] and ARGV[3].match(/^\d+$/)
+  amountTotal = questions.length
+  if ARGV[3] and ARGV[3].match(/^\d+$/) and ARGV[3].to_i < amountTotal
     amountTotal = ARGV[3].to_i
-  else
-    amountTotal = questions.length
   end
   amountCorrect, timeTaken = repl questions, amountTotal
   puts "Correct answers: #{amountCorrect}/#{amountTotal}"

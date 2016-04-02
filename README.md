@@ -17,4 +17,10 @@ Now if you run the following command:
 ruby relate.rb langs.csv creator language
 ```
 
-Relate will name each creator and your job will be to respond with the name of their language.
+Relate will name each creator and your job will be to answer with the name of their language.
+
+To limit the amount of questions you're asked, give a number at the end like so:
+
+```
+ruby relate.rb langs.csv creator language 2
+```
